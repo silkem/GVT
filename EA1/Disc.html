@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+	<html>
+		<head>	
+		  <!--Let browser know website is optimized for mobile-->
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta charset="UTF-8">
+			<title>Animated Disc</title>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+		  <script src="Disc.js"></script>
+		  <style>
+		  #explosionImage {
+  			height: 128px;
+  			width: 128px;
+			background: url('explosion.png') 0px 0px;
+			}
+			#discImage {
+  			height: 444px;
+  			width: 444px;
+			background: url('Disc_sheet.png') 0px 0px;
+			}
+		  </style>
+		</head>
+		<body onload=animateExplosion()>
+		<div style="margin: 30px">
+				<div class="columns">
+						<div class="column">
+								<div>
+										<p id="explosionImage"> </p>
+										<p>Nach Rechts drehen - r<br>
+											Nach Links drehen - l<br>
+											Spin - s<br><br>
+												Verwendete externe Resourcen:<br>
+												<a href="https://bulma.io/">bulma.io</a><br>
+												<a href="https://www.sternzeichen-partner.com/sternzeichen-reihenfolge-4/">Sternzeichen Symbole</a><br>
+												<a href="http://gushh.net/blog/free-game-sprites-explosion-3/">Explosion</a><br></p>
+								</div>
+						</div>
+						<div class="column">
+								<div class="column" style="position: relative">
+										<p id="discImage" style="z-index:0; position: absolute"> </p>
+										<p id="degree" style="z-index: 10; top: 0; left: 0; position: absolute; margin: 222px 0px 0px 222px">0°</p>
+								</div>
+						</div>
+				</div>
+
+		</div>
+		</body>
+</html>
