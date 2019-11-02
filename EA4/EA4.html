@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>Parametrisierte Flächen</title>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+
+        // Get the WebGL context.
+        var canvas = document.getElementById('canvas');
+        var gl = canvas.getContext('experimental-webgl');
+
+        // Pipeline setup.
+        gl.clearColor(0.2, 0.2, 0.2, 1);
+
+        // Backface culling.
+        gl.frontFace(gl.CCW);
+        gl.enable(gl.CULL_FACE);
+        gl.disable(gl.CULL_FACE);
+        gl.cullFace(gl.BACK);
+
+        // Depth(Z)-Buffer.
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+
+        // Polygon offset of rastered Fragments.
+        gl.enable(gl.POLYGON_OFFSET_FILL);
+        gl.polygonOffset(1.0, 1.0);
+
+        // Compile vertex shader.
+        var vsSource = '' +
+            'attribute vec3 pos;' +
+            'attribute vec4 col;' +
+            'varying vec4 color;' +
+            'void main() {' +
+            'color = col;' +
+            'gl_Position = vec4(pos * 0.5, 1);' +
+            '}';
+        var vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, vsSource);
+        gl.compileShader(vs);
+
+        // Compile fragment shader.
+        fsSouce = 'precision mediump float;' +
+            'varying vec4 color;' +
+            'void main() {' +
+            'gl_FragColor = color;' +
+            '}';
+        var fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, fsSouce);
+        gl.compileShader(fs);
+
+        // Link shader together into a program.
+        var prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.bindAttribLocation(prog, 0, "pos");
+        gl.linkProgram(prog);
+        gl.useProgram(prog);
+
+        // Vertex data Enneper.
+        // Positions, Index data.
+        var verticesEnneper, colorsEnneper, indicesLinesEnneper, indicesTrisEnneper;
+
+        // // Fill the data arrays.
+        createVertexDataEnneper()
+
+        // Setup position vertex buffer object.
+        var vboPosEnneper = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vboPosEnneper);
+        gl.bufferData(gl.ARRAY_BUFFER, verticesEnneper, gl.STATIC_DRAW);
+
+        // Bind vertex buffer to attribute variable.
+        var posAttribEnneper = gl.getAttribLocation(prog, 'pos');
+        gl.vertexAttribPointer(posAttribEnneper, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(posAttribEnneper);
+
+        // Setup constant color.
+        var vboColEnneper = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vboColEnneper);
+        gl.bufferData(gl.ARRAY_BUFFER, colorsEnneper, gl.STATIC_DRAW);
+
+        // Setup lines index buffer object.
+        var iboLinesEnneper = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLinesEnneper);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indicesLinesEnneper, gl.STATIC_DRAW);
+        iboLinesEnneper.numberOfElements = indicesLinesEnneper.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Setup tris index buffer object.
+        var iboTrisEnneper = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTrisEnneper);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indicesTrisEnneper, gl.STATIC_DRAW);
+        iboTrisEnneper.numberOfElements = indicesTrisEnneper.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Clear framebuffer and render primitives.
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        // Bind vertex buffer
+        var colAttribEnneper = gl.getAttribLocation(prog, 'col');
+
+        // Setup rendering tris.
+
+        gl.vertexAttrib4f(colAttribEnneper, 15 / 255, 3 / 255, 252 / 255, 0.7);
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTrisEnneper);
+
+        gl.drawElements(gl.TRIANGLES,
+
+            iboTrisEnneper.numberOfElements, gl.UNSIGNED_SHORT, 0);
+
+
+
+        // Setup rendering lines.
+
+        gl.vertexAttrib4f(colAttribEnneper, 252 / 255, 255 / 255, 179 / 255, 1);
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLinesEnneper);
+
+        gl.drawElements(gl.LINES,
+
+            iboLinesEnneper.numberOfElements, gl.UNSIGNED_SHORT, 0);
+
+
+
+        // Vertex data AsymmetricTorus.
+        // Positions, Index data.
+        var verticesAsymmetricTorus, colorsAsymmetricTorus, indicesLinesAsymmetricTorus, indicesTrisAsymmetricTorus;
+
+        // Fill the data arrays.
+        createVertexDataAsymmetricTorus();
+
+        // Setup position vertex buffer object.
+        var vboPosAsymmetricTorus = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vboPosAsymmetricTorus);
+        gl.bufferData(gl.ARRAY_BUFFER, verticesAsymmetricTorus, gl.STATIC_DRAW);
+
+        // Bind vertex buffer to attribute variable.
+        var posAttribAsymmetricTorus = gl.getAttribLocation(prog, 'pos');
+        gl.vertexAttribPointer(posAttribAsymmetricTorus, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(posAttribAsymmetricTorus);
+
+        // Setup constant color.
+        var vboColAsymmetricTorus = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vboColAsymmetricTorus);
+        gl.bufferData(gl.ARRAY_BUFFER, colorsAsymmetricTorus, gl.STATIC_DRAW);
+
+        // Setup lines index buffer object.
+        var iboLinesAsymmetricTorus = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLinesAsymmetricTorus);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indicesLinesAsymmetricTorus, gl.STATIC_DRAW);
+        iboLinesAsymmetricTorus.numberOfElements = indicesLinesAsymmetricTorus.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Setup tris index buffer object.
+        var iboTrisAsymmetricTorus = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTrisAsymmetricTorus);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indicesTrisAsymmetricTorus, gl.STATIC_DRAW);
+        iboTrisAsymmetricTorus.numberOfElements = indicesTrisAsymmetricTorus.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Bind vertex buffer
+        var colAttribAsymmetricTorus = gl.getAttribLocation(prog, 'col');
+
+        // Setup rendering tris.
+        gl.vertexAttrib4f(colAttribAsymmetricTorus, 204 / 255, 49 / 255, 43 / 255, 1);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTrisAsymmetricTorus);
+        gl.drawElements(gl.TRIANGLES, iboTrisAsymmetricTorus.numberOfElements, gl.UNSIGNED_SHORT, 0);
+
+        // Setup rendering lines.
+        gl.vertexAttrib4f(colAttribAsymmetricTorus, 252 / 255, 255 / 255, 179 / 255, 1);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLinesAsymmetricTorus);
+        gl.drawElements(gl.LINES, iboLinesAsymmetricTorus.numberOfElements, gl.UNSIGNED_SHORT, 0);
+
+        function createVertexDataEnneper() {
+            var n = 30;
+            var m = 20;
+            var a = 0.25;
+            var b = 0.25;
+            var c = 0.1;
+            var du = 4 / n;
+            var dv = 4 / m;
+
+            // Positions.
+            verticesEnneper = new Float32Array(3 * (n + 1) * (m + 1));
+            // Index data.
+            indicesLinesEnneper = new Uint16Array(2 * 2 * n * m);
+            indicesTrisEnneper = new Uint16Array(3 * 2 * n * m);
+            // Colors.
+            colorsEnneper = new Float32Array(3 * (n + 1) * (m + 1));
+
+            // Counter for entries in index array.
+            var iLines = 0;
+            var iTris = 0;
+
+            // Loop angle u.
+            for (var i = 0, u = -2; i <= n; i++ , u += du) {
+                // Loop height v.
+                for (var j = 0, v = -2; j <= m; j++ , v += dv) {
+
+                    var iVertex = i * (m + 1) + j;
+
+                    var x = a * (u - (((Math.pow(u,3)) / 3) + u * Math.pow(v,2)));
+                    var z = c * (Math.pow(u,2) - Math.pow(v,2));
+                    var y = b * (v - ((Math.pow(v,3) / 3) + Math.pow(u,2) * v));
+
+                    // Set vertex positions.
+                    verticesEnneper[iVertex * 3] = x;
+                    verticesEnneper[iVertex * 3 + 1] = y;
+                    verticesEnneper[iVertex * 3 + 2] = z;
+
+                    // Set index.
+                    // Line on beam.
+                    if (j > 0 && i > 0) {
+                        indicesLinesEnneper[iLines++] = iVertex - 1;
+                        indicesLinesEnneper[iLines++] = iVertex;
+                    }
+                    // Line on ring.
+                    if (j > 0 && i > 0) {
+                        indicesLinesEnneper[iLines++] = iVertex - (m + 1);
+                        indicesLinesEnneper[iLines++] = iVertex;
+                    }
+
+                    // Set index.
+                    // Two Triangles.
+                    if (j > 0 && i > 0) {
+                        indicesTrisEnneper[iTris++] = iVertex;
+                        indicesTrisEnneper[iTris++] = iVertex - 1;
+                        indicesTrisEnneper[iTris++] = iVertex - (m + 1);
+
+                        indicesTrisEnneper[iTris++] = iVertex - 1;
+                        indicesTrisEnneper[iTris++] = iVertex - (m + 1) - 1;
+                        indicesTrisEnneper[iTris++] = iVertex - (m + 1);
+                    }
+                }
+            }
+        }
+
+        function createVertexDataAsymmetricTorus() {
+        const n = 40;
+        const m = 15;
+        const R = 0.5;
+        const r = 0.15;
+        const a = 1.5;
+        const du = 2 * Math.PI / n;
+        const dv = 2 * Math.PI / m;
+
+        // Counter for entries in index array.
+        let iLines = 0;
+        let iTris = 0;
+
+        // Positions.
+        verticesAsymmetricTorus = new Float32Array(3 * (n + 1) * (m + 1));
+        colorsAsymmetricTorus = new Float32Array(3 * (n + 1) * (m + 1));
+
+        // Index data.
+        indicesLinesAsymmetricTorus = new Uint16Array(2 * 2 * n * m);
+        indicesTrisAsymmetricTorus = new Uint16Array(3 * 2 * n * m);
+
+        // Loop angle u.
+        for (let i = 0, u = -1; i <= n; i++, u += du) {
+            // Loop height v.
+            for (let j = 0, v = -1; j <= m; j++, v += dv) {
+                const iVertex = i * (m + 1) + j;
+                const x = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.cos(u);
+                const z = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.sin(u);
+                const y = r * Math.sin(v) * (a + Math.sin(u));
+
+                    // Set vertex positions.
+                    verticesAsymmetricTorus[iVertex * 3] = x;
+                    verticesAsymmetricTorus[iVertex * 3 + 1] = y;
+                    verticesAsymmetricTorus[iVertex * 3 + 2] = z;
+
+                    // Set index.
+                    // Line on beam.
+                    if (j > 0 && i > 0) {
+                        indicesLinesAsymmetricTorus[iLines++] = iVertex - 1;
+                        indicesLinesAsymmetricTorus[iLines++] = iVertex;
+                    }
+                    // Line on ring.
+                    if (j > 0 && i > 0) {
+                        indicesLinesAsymmetricTorus[iLines++] = iVertex - (m + 1);
+                        indicesLinesAsymmetricTorus[iLines++] = iVertex;
+                    }
+
+                    // Set index.
+                    // Two Triangles.
+                    if (j > 0 && i > 0) {
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex;
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex - 1;
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex - (m + 1);
+
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex - 1;
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex - (m + 1) - 1;
+                        indicesTrisAsymmetricTorus[iTris++] = iVertex - (m + 1);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
