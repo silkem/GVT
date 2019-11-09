@@ -1,0 +1,66 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+	<title>Cameramovement</title>
+	<meta charset="utf-8" />
+	<script src="ext/gl-matrix.js"></script>
+	<script src="EA5_vertexData_torus.js"></script>
+	<script src="EA5_vertexData_sphere.js"></script>
+	<script src="EA5_vertexData_enneper.js"></script>
+	<script src="EA5_vertexData_plane.js"></script>
+	<script src="EA5.js"></script>
+	<script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+
+			varying vec4 vColor;
+
+			void main(){
+				gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+	
+				vColor = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);
+				vColor = (vColor + 1.0) / 2.0;
+			}
+		</script>
+	<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+				gl_FragColor = vColor;
+			}
+	</script>
+	<script>
+			function changeSubdivision(change) {
+				var currentSubdivision = parseInt(document.getElementById('subdivision').value);
+				if (change == 1) {
+					if (currentSubdivision < 5) {
+						document.getElementById('subdivision').value = currentSubdivision + change;
+						app.start();
+					}
+				} else if (change == -1) {
+					if (currentSubdivision >= 1) {
+						document.getElementById('subdivision').value = currentSubdivision + change;
+						app.start();
+					}
+				}
+			}
+		</script>
+</head>
+
+<body onload="app.start()">
+	<canvas id="canvas" width="600" height="600"></canvas>
+	<div>
+		<span style="display: inline-block; text-align: right;"><button onclick="changeSubdivision(-1)">-</button></span>
+		<input style="text-align: center;" readonly id="subdivision" value="0" min="0" max="5">
+		<span style="display: inline-block; text-align: left;"><button onclick="changeSubdivision(1)">+</button></span>
+		<a href="http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html" target="_blank">Sphere inspiration</a>
+
+	</div>
+</body>
+
+</html>
