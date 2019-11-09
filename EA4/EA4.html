@@ -242,13 +242,13 @@
         }
 
         function createVertexDataAsymmetricTorus() {
-        const n = 40;
-        const m = 15;
-        const R = 0.5;
-        const r = 0.15;
-        const a = 1.5;
-        const du = 2 * Math.PI / n;
-        const dv = 2 * Math.PI / m;
+            var n = 40;
+            var m = 15;
+            var R = 0.5;
+            var r = 0.15;
+            var a = 1.5;
+            var du = 2 * Math.PI / n;
+            var dv = 2 * Math.PI / m;
 
         // Counter for entries in index array.
         let iLines = 0;
@@ -266,10 +266,10 @@
         for (let i = 0, u = -1; i <= n; i++, u += du) {
             // Loop height v.
             for (let j = 0, v = -1; j <= m; j++, v += dv) {
-                const iVertex = i * (m + 1) + j;
-                const x = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.cos(u);
-                const z = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.sin(u);
-                const y = r * Math.sin(v) * (a + Math.sin(u));
+                var iVertex = i * (m + 1) + j;
+                var x = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.cos(u);
+                var z = (R + r * Math.cos(v) * (a + Math.sin(u))) * Math.sin(u);
+                var y = r * Math.sin(v) * (a + Math.sin(u));
 
                     // Set vertex positions.
                     verticesAsymmetricTorus[iVertex * 3] = x;
