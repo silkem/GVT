@@ -101,7 +101,7 @@ var sphere = ( function() {
         }
 
         function getMiddlePoint(p1, p2) {
-
+            
             // Calculate coordinates of mid.
             var midX = (vertices[3 * p1] + vertices[3 * p2]) / 2.0;
             var midY = (vertices[3 * p1 + 1] + vertices[3 * p2 + 1]) / 2.0;

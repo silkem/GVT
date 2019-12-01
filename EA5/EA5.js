@@ -208,7 +208,9 @@ var app = ( function() {
 			switch (key) {
 				case('w'):
 				case('ArrowUp'):
-					camera.yAngle += deltaRotate;
+					if(camera.yAngle + deltaRotate < Math.PI/2){
+						camera.yAngle += deltaRotate;
+					}	
 					break;
 				case('a'):
 				case('ArrowLeft'):
@@ -216,7 +218,9 @@ var app = ( function() {
 					break;
 				case('s'):
 				case('ArrowDown'):
-					camera.yAngle -= deltaRotate;
+					if(camera.yAngle - deltaRotate > - Math.PI/2){
+						camera.yAngle -= deltaRotate;
+					}
 					break;
 				case('d'):
 				case('ArrowRight'):
