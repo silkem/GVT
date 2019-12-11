@@ -1,0 +1,53 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<script src="ext/gl-matrix.js"></script>
+		<script src="EA6_vertexData_sphere.js"></script>
+		<script src="EA6_vertexData_torus.js"></script>
+		<script src="EA6_vertexData_plane.js"></script>
+		<script src="EA6.js"></script>
+		<script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat3 uNMatrix;
+			uniform vec4 uColor;
+
+			varying vec4 vColor;
+
+			void main(){
+			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+
+			vec3 tNormal = uNMatrix * aNormal;
+
+			vColor = vec4(tNormal.z, tNormal.z, tNormal.z, 1.0);
+			vColor = uColor * (vColor + 1.0) / 2.0;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+			gl_FragColor = vColor;
+			}
+		</script>
+	</head>
+	<body onload="app.start()">
+		<canvas id="canvas" width="500" height="500"></canvas>
+		<br>
+		Change projection of scene: <br>
+		[O] - Ortho  <br>
+		[F] - Frustum  <br>
+		[P] - Perspective  <br>
+		Camera move (Use Shift for Invert): <br>
+		[C] - Orbit camera <br>
+		[H] - Up and Down  <br>
+		[D] - Change Distance to center  <br>
+		[V] - Camera fovy in radian <br>
+		Interaction (Use Shift for Invert): <br>
+		[K] - Rotate Torus and move spheres<br>
+	</body>
+</html>
