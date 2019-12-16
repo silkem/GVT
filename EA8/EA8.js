@@ -99,10 +99,15 @@ var app = (function() {
     }
 
     function initShaderProgram() {
+        var style = document.getElementById('style').textContent;
+        var fragmentshaderid = "fragmentshader";
+        if (style == "Toon") {
+            fragmentshaderid = "fragmentshadertoon";
+        }
         // Init vertex shader.
         var vs = initShader(gl.VERTEX_SHADER, "vertexshader");
         // Init fragment shader.
-        var fs = initShader(gl.FRAGMENT_SHADER, "fragmentshader");
+        var fs = initShader(gl.FRAGMENT_SHADER, fragmentshaderid);
         // Link shader into a shader program.
         prog = gl.createProgram();
         gl.attachShader(prog, vs);
