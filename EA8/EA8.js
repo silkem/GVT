@@ -42,8 +42,8 @@ var app = (function() {
     var illumination ={
         ambientLight : [.5,.5,.5],
         light : [
-            {isOn: true, position: [3., 1., 0.], color: [1., 1., 1.]},
-            {isOn: true, position: [-3., 1., 0.], color: [1., 1., 1.]},
+            {isOn:true, position:[3.,1.,3.], color:[1.,1.,1.]},
+            {isOn:true, position:[-3.,1.,-3.], color:[1.,1.,1.]},
         ]
     };
     
@@ -338,17 +338,17 @@ var app = (function() {
             switch(c){
                 case ('I'):
                     deltaTranslateLight -= deltaRotate;
-                    illumination.light[1].position[0] = 0 - Math.cos(deltaTranslateLight) * r;
-                    illumination.light[1].position[2] = 0 - Math.sin(deltaTranslateLight) * r;
-                    illumination.light[0].position[0] = 0 - Math.cos(Math.PI + deltaTranslateLight) * r;
-                    illumination.light[0].position[2] = 0 - Math.sin(Math.PI + deltaTranslateLight) * r;
+                    illumination.light[0].position[0] = Math.cos(.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[0].position[2] = Math.sin(.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[1].position[0] = Math.cos(1.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[1].position[2] = Math.sin(1.25 * Math.PI + deltaTranslateLight) * r;
                     break;
                 case ('L'):
                     deltaTranslateLight += deltaRotate;
-                    illumination.light[0].position[0] = Math.cos(deltaTranslateLight) * r;
-                    illumination.light[0].position[2] = Math.sin(deltaTranslateLight) * r;
-                    illumination.light[1].position[0] = Math.cos(Math.PI + deltaTranslateLight) * r;
-                    illumination.light[1].position[2] = Math.sin(Math.PI + deltaTranslateLight) * r;
+                    illumination.light[0].position[0] = Math.cos(.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[0].position[2] = Math.sin(.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[1].position[0] = Math.cos(1.25 * Math.PI + deltaTranslateLight) * r;
+                    illumination.light[1].position[2] = Math.sin(1.25 * Math.PI + deltaTranslateLight) * r;
                     break;
             }
             // Change projection of scene.
