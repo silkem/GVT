@@ -97,15 +97,10 @@ var app = ( function() {
 	}
 
 	function initShaderProgram() {
-		var texture = document.getElementById('texture').textContent;
-        var fragmentshaderid = "fragmentshader";
-        if (texture == "Procedural") {
-            fragmentshaderid = "fragmentshaderproced";
-        }
 		// Init vertex shader.
 		var vs = initShader(gl.VERTEX_SHADER, "vertexshader");
 		// Init fragment shader.
-		var fs = initShader(gl.FRAGMENT_SHADER, fragmentshaderid);
+		var fs = initShader(gl.FRAGMENT_SHADER, "fragmentshader");
 		// Link shader into a shader program.
 		prog = gl.createProgram();
 		gl.attachShader(prog, vs);

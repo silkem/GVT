@@ -67,6 +67,22 @@
 			 
 				float sn = max( dot(s,n), 0.0);
 				float rv = max( dot(r,v), 0.0);
+
+				if (max(dot(v, n), 0.) < 0.3) {
+					return vec3(0.);
+				} else {
+					if (sn == 0.) {
+						sn += 0.1337;
+					}
+					if (sn < .9) {
+						sn = ceil(sn / 0.25) * 0.25;
+					} else {
+						sn = 1.;
+					}
+					if (rv < .98) {
+						rv = 0.;
+					}
+				}
 			 
 				vec3 diffuse = material.kd * L * sn;
 			 
@@ -103,7 +119,7 @@
 	<body onload="app.start()">
 		<canvas id="canvas" width="500" height="500"></canvas><br>
 		Use "I" or "L" for light movement. <br>
-		Current Style: Normal <br>
-		<span style="display: inline-block; text-align: left;"><button onclick="window.location.href='EA8_Toon.html'">Toom</button></span>
+		Current Style: Toon <br>
+		<span style="display: inline-block; text-align: left;"><button onclick="window.location.href='EA8.html'">Normal</button></span>
 	</body>
 </html>
