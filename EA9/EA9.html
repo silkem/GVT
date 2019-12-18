@@ -178,37 +178,9 @@
 				vec3 v = vec3(0,0,-1);
 				
 				vec3 vNormal = normalize(vNormal);
-
-				vec2 z;
-				float x,y;
-				int steps;
-				int NUM_STEPS = 50;
-			 
-				z.x = vTextureCoord.s;
-				z.y = vTextureCoord.t;
-			 
-				for (int i=0;i<NUM_STEPS;i++) {
-			 
-				steps = i;
-			 
-					x = (z.x * z.x - z.y * z.y) + vTextureCoord.s;
-					y = (z.y * z.x + z.x * z.y) + vTextureCoord.t;
-			 
-					if((x * x + y * y) > 4.0) {
-					  break;
-					}
-			 
-					z.x = x;
-					z.y = y;
-			 
-				}
-			 
-				if (steps == NUM_STEPS-1) {
-					vec4 tColor = vec4(1.0, 0.0, 0.0, 1.0);
-				} else {
-					vec4 tColor = vec4(0.0, 0.0, 0.0, 1.0);
-				}
-
+								
+				float strips = mod(floor(vTextureCoord.s * 36.), 2.);
+				vec4 tColor = vec4(strips,0,0,1);
 				vec4 lighting = vec4( phong(vPosition.xyz, vNormal, v), 1.0);
 				gl_FragColor = tColor * lighting;
 			}			
