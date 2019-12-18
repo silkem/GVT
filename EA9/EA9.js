@@ -360,51 +360,6 @@ var app = ( function() {
 					interactiveModel.rotate[2] += sign * deltaRotate;
 					break;
 			}
-			// Scale/squeese interactiveModel.
-			switch(c) {
-				case('S'):
-					interactiveModel.scale[0] *= 1 + sign * deltaScale;
-					interactiveModel.scale[1] *= 1 - sign * deltaScale;
-					interactiveModel.scale[2] *= 1 + sign * deltaScale;
-					break;
-			}
-			// Change projection of scene.
-			switch(c) {
-				case('O'):
-					camera.projectionType = "ortho";
-					camera.lrtb = 2;
-					break;
-				case('F'):
-					camera.projectionType = "frustum";
-					camera.lrtb = 1.2;
-					break;
-				case('P'):
-					camera.projectionType = "perspective";
-					break;
-			}
-			// Camera move and orbit.
-			switch(c) {
-				case('C'):
-					// Orbit camera.
-					camera.zAngle += sign * deltaRotate;
-					break;
-				case('H'):
-					// Move camera up and down.
-					camera.eye[1] += sign * deltaTranslate;
-					break;
-				case('D'):
-					// Camera distance to center.
-					camera.distance += sign * deltaTranslate;
-					break;
-				case('V'):
-					// Camera fovy in radian.
-					camera.fovy += sign * 5 * Math.PI / 180;
-					break;
-				case('B'):
-					// Camera near plane dimensions.
-					camera.lrtb += sign * 0.1;
-					break;
-			}
 			// Render the scene again on any key pressed.
 			render();
 		};
