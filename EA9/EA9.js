@@ -97,6 +97,11 @@ var app = ( function() {
 	}
 
 	function initShaderProgram() {
+		var texture = document.getElementById('texture').textContent;
+        var fragmentshaderid = "fragmentshader";
+        if (texture == "Procedural") {
+            fragmentshaderid = "fragmentshaderproced";
+        }
 		// Init vertex shader.
 		var vs = initShader(gl.VERTEX_SHADER, "vertexshader");
 		// Init fragment shader.
@@ -174,7 +179,6 @@ var app = ( function() {
 		model.texture = texture;
 		texture.loaded = false;
 		texture.image = new Image();
-		texture.image.crossOrigin = "anonymous";
 		texture.image.onload = function() {
 			onloadTextureImage(texture);
 		};
